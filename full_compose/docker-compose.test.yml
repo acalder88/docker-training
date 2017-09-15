@@ -1,5 +1,5 @@
 ---
-version: '3.3'
+version: '3.1'
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -25,7 +25,7 @@ services:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 172.20.20.2:2181
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://172.20.20.3:9092
     extra_hosts:
       - "moby:127.0.0.1"
@@ -40,7 +40,7 @@ services:
     depends_on:
       - kafka
     environment:
-      KAFKA_BROKERS: 172.20.20.3:9092
+      KAFKA_BROKERS: kafka:9092
 
   consumer:
     image: acalderon88/pythonconsumer:latest
@@ -50,7 +50,7 @@ services:
     depends_on:
       - kafka
     environment:
-      KAFKA_BROKERS: 172.20.20.3:9092
+      KAFKA_BROKERS: kafka:9092
     volumes:
       - "/tmp/:/tmp/"
 

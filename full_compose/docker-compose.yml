@@ -1,9 +1,11 @@
 ---
-version: '2'
+version: '3.3'
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
-    network_mode: host
+    networks:
+      dt-net:
+        ipv4_address: 172.20.20.2
     ports:
       - "2181:2181"
     environment:
@@ -14,35 +16,47 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:latest
-    network_mode: host
+    networks:
+      dt-net:
+        ipv4_address: 172.20.20.3
     ports: 
       - "9092:9092"
     depends_on:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: localhost:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ZOOKEEPER_CONNECT: 172.20.20.2:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://172.20.20.3:9092
     extra_hosts:
       - "moby:127.0.0.1"
 
   publisher:
     image: acalderon88/javapublisher:latest
-    network_mode: host
+    networks:
+      dt-net:
+        ipv4_address: 172.20.20.4
     ports:
       - "8080:8080"
     depends_on:
       - kafka
     environment:
-      KAFKA_BROKERS: localhost:9092
+      KAFKA_BROKERS: 172.20.20.3:9092
 
   consumer:
     image: acalderon88/pythonconsumer:latest
-    network_mode: host
+    networks:
+      dt-net:
+        ipv4_address: 172.20.20.5
     depends_on:
       - kafka
     environment:
-      KAFKA_BROKERS: localhost:9092
+      KAFKA_BROKERS: 172.20.20.3:9092
     volumes:
       - "/tmp/:/tmp/"
 
+networks:
+  dt-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.20.0/24
