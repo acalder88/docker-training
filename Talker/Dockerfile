@@ -3,6 +3,6 @@ RUN echo "Hello"
 COPY talker.jar /opt/jars/
 COPY TaskListRunner.sh /
 WORKDIR /opt/jars
-ENV USER=Acalderon
+ENV USER=PSL
 EXPOSE 8080
 ENTRYPOINT /TaskListRunner.sh
