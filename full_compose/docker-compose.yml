@@ -2,7 +2,7 @@
 version: '3.3'
 services:
   talker:
-    image: confluentinc/cp-zookeeper:latest
+    image: acalderon88/talker:latest
     networks:
       dt-net:
         ipv4_address: 172.20.20.2
@@ -12,7 +12,7 @@ services:
       USER: EAFIT
 
   proxy:
-    image: confluentinc/cp-kafka:latest
+    image: acalderon88/proxy:latest
     networks:
       dt-net:
         ipv4_address: 172.20.20.3

@@ -19,6 +19,4 @@ public class Proxy {
         builder.append(message);
         return template.getForEntity("http://talker:8080/api/talker?message=" + builder.toString(), String.class);
     }
-
-
 }
