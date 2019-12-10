@@ -1,8 +1,8 @@
 FROM openjdk:8
 RUN echo "Hello"
-COPY talker.jar /opt/jars/
-COPY TaskListRunner.sh /
+ADD talker.jar /opt/jars/
+RUN chmod +x /opt/jars/talker.jar
 WORKDIR /opt/jars
-ENV USER=PSL
+ENV USER=EAFIT
 EXPOSE 8080
-ENTRYPOINT /TaskListRunner.sh
+ENTRYPOINT java -jar /opt/jars/talker.jar
